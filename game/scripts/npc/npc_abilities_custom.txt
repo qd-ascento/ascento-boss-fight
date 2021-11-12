@@ -1,0 +1,170 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"Version"		"1"
+
+	//=================================================================================================================
+	// Templar Assassin: Refraction Holdout
+	//=================================================================================================================
+	"templar_assassin_refraction_holdout"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0 0.0 0.0 0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"17.0 17.0 17.0 17.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"100"
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_absorb"				"200 300 400 500"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_damage"				"20 40 60 80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"17.0 17.0 17.0 17.0"
+			}
+		}
+	}
+
+"dontkill_aura"
+{
+// General
+//-------------------------------------------------------------------------------------------------------------
+"BaseClass" "ability_datadriven"
+"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_AURA | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+"AbilityTextureName" "dontkill"
+"AbilityUnitTargetTeam" "DOTA_UNIT_TARGET_TEAM_BOTH"
+"AbilityUnitTargetType" "DOTA_UNIT_TARGET_ALL"
+
+
+"OnSpellStart"
+{
+"ApplyModifier"
+{
+"ModifierName" "modifier_dontkill_aura"
+"Target" "CASTER"
+}
+}
+
+
+
+// Modifiers
+//-------------------------------------------------------------------------------------------------------------
+"Modifiers"
+{
+"modifier_dontkill_aura"
+{
+"Passive" "1"
+"IsHidden" "1"
+"Aura_ApplyToCaster" "0"
+
+"Aura" "dontkill_aura_fountain"
+"Aura_Radius" "2500"
+"Aura_Teams" "DOTA_UNIT_TARGET_TEAM_BOTH"
+"Aura_Types" "DOTA_UNIT_TARGET_ALL"
+"Aura_Flags" "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES | DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+}
+"dontkill_aura_fountain"
+{
+"Passive" "0"
+"IsHidden" "0"
+"IsBuff" "1"
+"EffectName" ""
+"EffectAttachType" "follow_origin"
+"States"
+{
+"MODIFIER_STATE_INVULNERABLE" "MODIFIER_STATE_VALUE_ENABLED"
+}
+
+}
+}
+
+
+"fountain_aura"
+{
+// General
+//-------------------------------------------------------------------------------------------------------------
+"AbilityBehavior" "DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+"BaseClass" "ability_datadriven"
+"AbilityTextureName" "regenerations"
+
+"OnSpellStart"
+{
+"ApplyModifier"
+{
+"ModifierName" "fountain_aura_regen"
+"Target" "CASTER"
+}
+}
+"AbilitySpecial"
+{
+"01"
+{
+"var_type" "FIELD_INTEGER"
+"hp_reg" "30"
+}
+"02"
+{
+"var_type" "FIELD_INTEGER"
+"mp_reg" "15"
+}
+
+}
+// Modifiers
+//-------------------------------------------------------------------------------------------------------------
+"Modifiers"
+{
+"fountain_aura_regen"
+{
+"IsHidden" "1"
+"Passive" "1"
+"Aura_ApplyToCaster" "0"
+
+"Aura" "modifier_fountain_regen"
+"Aura_Radius" "500"
+"Aura_Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY"
+"Aura_Types" "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP | DOTA_UNIT_TARGET_MECHANICAL"
+"Aura_Flags" "DOTA_UNIT_TARGET_FLAG_INVULNERABLE"
+"Aura_ApplyToCaster" "0"
+
+}
+
+"modifier_fountain_regen"
+{
+"IsBuff" "1"
+"Passive" "0"
+"IsHidden" "0"
+"EffectName" "particles/generic_gameplay/rune_regeneration.vpcf"
+"EffectAttachType" "follow_origin"
+"Properties"
+{
+"MODIFIER_PROPERTY_HEALTH_REGEN_PERCENTAGE" "%hp_reg"
+"MODIFIER_PROPERTY_MANA_REGEN_TOTAL_PERCENTAGE" "%mp_reg"
+}
+}
+}
+}
+
+
+}

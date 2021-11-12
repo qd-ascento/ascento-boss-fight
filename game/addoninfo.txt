@@ -1,0 +1,20 @@
+"AddonInfo"
+{
+	"TeamCount" "10"
+ 	"maps"      "template_map"
+  	"penaltieenabled" 		"0"
+	"IsTemplate" 			"0"
+	"IsPlayable" 			"1"
+
+	"MaxPlayers" 			"10"
+
+  "template_map"
+  {
+          "MaxPlayers"                    "10"
+  }
+  
+	"hero_picker"
+	{
+		"background_map"		"scenes/darkmoon_hero_pick"
+	}
+}
