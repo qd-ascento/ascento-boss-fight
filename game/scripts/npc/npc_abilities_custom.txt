@@ -1,51 +1,12 @@
+
 // Dota Heroes File
 "DOTAAbilities"
 {
 	"Version"		"1"
 
-	//=================================================================================================================
-	// Templar Assassin: Refraction Holdout
-	//=================================================================================================================
-	"templar_assassin_refraction_holdout"
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.0 0.0 0.0 0.0"
 
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"17.0 17.0 17.0 17.0"
 
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"damage_absorb"				"200 300 400 500"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"bonus_damage"				"20 40 60 80"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"duration"					"17.0 17.0 17.0 17.0"
-			}
-		}
-	}
 
 "dontkill_aura"
 {
@@ -99,6 +60,8 @@
 
 }
 }
+
+
 
 
 "fountain_aura"
@@ -165,6 +128,259 @@
 }
 }
 }
+
+
+
+"chaos_strike_datadriven"
+{
+	// General
+	//-------------------------------------------------------------------------------------------------------------
+	"BaseClass"				"ability_datadriven"
+	"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+	"AbilityTextureName"			"chaos_knight_chaos_strike"
+
+	// Precache
+	//-------------------------------------------------------------------------------------------------------------
+	"precache"
+	{
+		"soundfile"		"soundevents/game_sounds_heroes/game_sounds_chaos_knight.vsndevts"
+		"particle"		"particles/units/heroes/hero_chaos_knight/chaos_knight_weapon_blur_critical.vpcf"
+	}
+
+	// Special
+	//-------------------------------------------------------------------------------------------------------------
+	"AbilitySpecial"
+	{
+		"01"
+		{
+			"var_type"					"FIELD_INTEGER"
+			"crit_damage"				"150 200 250 300"
+		}
+		"02"
+		{
+			"var_type"					"FIELD_INTEGER"
+			"crit_chance"				"10 10 10 10"
+		}
+		"03"
+		{
+			"var_type"					"FIELD_INTEGER"
+			"armor_reduction"			"-5"
+		}
+		"04"
+		{
+			"var_type"					"FIELD_FLOAT"
+			"armor_reduction_duration"	"8"
+		}
+	}
+
+	"Modifiers"
+	{
+		"modifier_chaos_strike_datadriven"
+		{
+		    "Passive"   "1"
+		    "IsHidden"  "1"
+
+		    "OnAttackStart"
+		    {
+		        "RemoveModifier"
+		        {
+		            "ModifierName" 	"modifier_chaos_strike_crit_datadriven"
+		            "Target" 		"CASTER"
+		        }
+
+		        "Random"
+		        {
+		            "Chance" 	"%crit_chance"
+		            "OnSuccess"
+		            {
+		            	"FireSound"
+				        {
+				        	"EffectName"	"Hero_ChaosKnight.ChaosStrike"
+				        	"Target"		"CASTER"
+				        }
+
+				        "FireEffect"
+				        {
+				       		"EffectName" 		"particles/units/heroes/hero_chaos_knight/chaos_knight_weapon_blur_critical.vpcf"
+				            "EffectAttachType"  "attach_attack1"
+				            "Target"    		"CASTER"
+				        }
+
+		                "ApplyModifier"
+		                {
+		                    "ModifierName" 	"modifier_chaos_strike_crit_datadriven"
+		                    "Target"    	"CASTER"    
+		                }        
+		            }
+		        }
+		    }
+		}
+
+		"modifier_chaos_strike_crit_datadriven"
+		{
+		    "IsHidden"  "1"
+		    "Properties"
+		    {
+		        "MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE" "%crit_damage"
+		    }
+
+		    "OnAttack"
+		    {
+		    	"ApplyModifier"
+		    	{
+		    		"ModifierName"	"modifier_chaos_strike_armor_datadriven"
+		    		"Target" 		"TARGET"
+		    		"Duration"		"%armor_reduction_duration"
+		    	}
+		    }
+
+		    "OnAttackLanded"
+		    {
+		        "RemoveModifier"
+		        {
+		            "ModifierName"  "modifier_chaos_strike_crit_datadriven"
+		            "Target"   		"CASTER"    
+		        }
+		    }
+		}
+
+		"modifier_chaos_strike_armor_datadriven"
+		{
+			"IsHidden"	"1"
+			"IsDebuff"	"1"
+
+			"Properties"
+			{
+				"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS" "%armor_reduction"
+			}
+		}
+	}
+}
+
+
+"frostmourne_datadriven"
+{
+	// General
+	//-------------------------------------------------------------------------------------------------------------
+	"BaseClass"				"ability_datadriven"
+	"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+	"SpellImmunityType"		"SPELL_IMMUNITY_ENEMIES_YES"
+	"AbilityTextureName"	"abaddon_frostmourne"
+	
+
+	// Special
+	//-------------------------------------------------------------------------------------------------------------
+	"AbilitySpecial"
+	{
+		"01"
+		{
+			"var_type"						"FIELD_FLOAT"
+			"debuff_duration"				"2.5"
+		}
+		"02"
+		{
+			"var_type"						"FIELD_FLOAT"
+			"buff_duration"					"4.5"
+		}
+		"03"
+		{
+			"var_type"						"FIELD_INTEGER"
+			"slow_pct"						"-5 -10 -15 -20"
+		}
+		"04"
+		{
+			"var_type"						"FIELD_INTEGER"
+			"attack_slow_tooltip"			"-5 -10 -15 -20"
+		}
+		"05"
+		{
+			"var_type"						"FIELD_INTEGER"
+			"move_speed_pct"				"15"
+		}
+		"06"
+		{
+			"var_type"						"FIELD_INTEGER"
+			"attack_speed"					"10 20 30 40"
+		}
+	}
+
+	"precache"
+	{
+		"particle" 	"particles/units/heroes/hero_abaddon/abaddon_frost_slow.vpcf"
+		"particle"  "particles/units/heroes/hero_abaddon/abaddon_frost_buff.vpcf"
+	}
+
+	"Modifiers"
+	{
+		"modifier_frostmourne"
+		{
+			"Passive"	"1"
+			"IsHidden"	"1"
+
+			"OnAttackLanded"
+			{
+				"ApplyModifier"
+				{
+					"Target"
+					{
+						"Center"	"TARGET"
+						"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					}
+					"ModifierName"		"modifier_frostmourne_debuff"
+					"Duration"			"%debuff_duration"
+				}
+				"ApplyModifier"
+				{
+					"Target"			"CASTER"
+					"ModifierName"		"modifier_frostmourne_buff"
+					"Duration"			"%buff_duration"
+				}
+			}
+		}
+
+		"modifier_frostmourne_debuff"
+		{
+			"IsDebuff"	"1"
+			"EffectName"	"particles/units/heroes/hero_abaddon/abaddon_frost_slow.vpcf"
+			"EffectAttachType"	"follow_origin"
+			"Properties"
+			{
+				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%slow_pct"
+				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_slow_tooltip"
+			}
+			
+			"OnAttacked"
+			{
+				"ApplyModifier"
+				{
+					"Target"			"ATTACKER"
+					"ModifierName"		"modifier_frostmourne_buff"
+					"Duration"			"%buff_duration"
+				}
+			}
+		}
+
+		"modifier_frostmourne_buff"
+		{
+			"IsBuff"		"1"
+			"EffectName"	"particles/units/heroes/hero_abaddon/abaddon_frost_buff.vpcf"
+			"EffectAttachType"	"follow_origin"
+			"Properties"
+			{
+				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%move_speed_pct"
+				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_speed"
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
 
 
 }

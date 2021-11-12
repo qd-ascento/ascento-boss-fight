@@ -10,6 +10,7 @@ function Spawn:InitGameMode()
 	ListenToGameEvent('entity_killed', Dynamic_Wrap(Spawn, 'OnEntityKilled'), self)
 	ListenToGameEvent('dota_player_gained_level', Dynamic_Wrap(Spawn, 'OnPlayerLevelUp'), self)
   ListenToGameEvent('entity_hurt', Dynamic_Wrap(Spawn, 'OnEntityHurt'), self)
+
 end
 
 function Spawn:OnPlayerLevelUp( keys )
@@ -105,16 +106,16 @@ function CDOTA_BaseNPC:GiveExperiencePlayers( experience )
 end
 
 
---function Spawn:OnEntityHurt( event )
-  --local attacker = EntIndexToHScript(event.entindex_attacker)
-  --local target = EntIndexToHScript(event.entindex_killed)
-  --local damage = event.damage
-  --local damage_handle = EntIndexToHScript(event.damagebits )
+function Spawn:OnEntityHurt( event )
+  local attacker = EntIndexToHScript(event.entindex_attacker)
+  local target = EntIndexToHScript(event.entindex_killed)
+  local damage = event.damage
+  local damage_handle = EntIndexToHScript(event.damagebits )
   -- print(damage_handle.damage_type)
   -- for key, value in pairs(damage_handle) do
   --   print(key, value)
   -- end
 
---end
+end
 
 Spawn:InitGameMode()

@@ -56,21 +56,19 @@ if CAddonTemplateGameMode == nil then
 end
 
 
--- Generated from template
-
-if CAddonTemplateGameMode == nil then
-	CAddonTemplateGameMode = class({})
-end
 
 function Precache( context )
 
 end
 
--- Create the game mode when we activate
-function Activate()
-	GameRules.AddonTemplate = CAddonTemplateGameMode()
-	GameRules.AddonTemplate:InitGameMode()
+
+
+
+
+function CAddonTemplateGameMode:OnFirstPlayerLoaded()
+	StatsClient:FetchPreGameData()
 end
+
 
 function CAddonTemplateGameMode:InitGameMode()
 
@@ -142,3 +140,7 @@ function CAddonTemplateGameMode:InitGameMode()
 end
 
 
+function Activate()
+	GameRules.AddonTemplate = CAddonTemplateGameMode()
+	GameRules.AddonTemplate:InitGameMode()
+end
