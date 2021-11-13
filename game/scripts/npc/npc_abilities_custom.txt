@@ -60,7 +60,7 @@
 
 }
 }
-
+}
 
 
 
@@ -131,247 +131,32 @@
 
 
 
-"chaos_strike_datadriven"
+
+"golden_boss"
 {
-	// General
-	//-------------------------------------------------------------------------------------------------------------
-	"BaseClass"				"ability_datadriven"
+	"BaseClass"						"ability_lua"
+	"ScriptFile"					"heroes/boss/golden_boss.lua"
 	"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-	"AbilityTextureName"			"chaos_knight_chaos_strike"
-
-	// Precache
-	//-------------------------------------------------------------------------------------------------------------
-	"precache"
-	{
-		"soundfile"		"soundevents/game_sounds_heroes/game_sounds_chaos_knight.vsndevts"
-		"particle"		"particles/units/heroes/hero_chaos_knight/chaos_knight_weapon_blur_critical.vpcf"
-	}
-
-	// Special
-	//-------------------------------------------------------------------------------------------------------------
+	"AbilityTextureName"			"alchemist/bounty"
 	"AbilitySpecial"
 	{
 		"01"
 		{
-			"var_type"					"FIELD_INTEGER"
-			"crit_damage"				"150 200 250 300"
+			"var_type"              "FIELD_FLOAT"
+			"gold"          "1"
 		}
 		"02"
 		{
-			"var_type"					"FIELD_INTEGER"
-			"crit_chance"				"10 10 10 10"
+			"var_type"              "FIELD_FLOAT"
+			"gold_duration"          "2"
 		}
 		"03"
 		{
-			"var_type"					"FIELD_INTEGER"
-			"armor_reduction"			"-5"
-		}
-		"04"
-		{
-			"var_type"					"FIELD_FLOAT"
-			"armor_reduction_duration"	"8"
+			"var_type"              "FIELD_FLOAT"
+			"gold_interval"          "1"
 		}
 	}
 
-	"Modifiers"
-	{
-		"modifier_chaos_strike_datadriven"
-		{
-		    "Passive"   "1"
-		    "IsHidden"  "1"
-
-		    "OnAttackStart"
-		    {
-		        "RemoveModifier"
-		        {
-		            "ModifierName" 	"modifier_chaos_strike_crit_datadriven"
-		            "Target" 		"CASTER"
-		        }
-
-		        "Random"
-		        {
-		            "Chance" 	"%crit_chance"
-		            "OnSuccess"
-		            {
-		            	"FireSound"
-				        {
-				        	"EffectName"	"Hero_ChaosKnight.ChaosStrike"
-				        	"Target"		"CASTER"
-				        }
-
-				        "FireEffect"
-				        {
-				       		"EffectName" 		"particles/units/heroes/hero_chaos_knight/chaos_knight_weapon_blur_critical.vpcf"
-				            "EffectAttachType"  "attach_attack1"
-				            "Target"    		"CASTER"
-				        }
-
-		                "ApplyModifier"
-		                {
-		                    "ModifierName" 	"modifier_chaos_strike_crit_datadriven"
-		                    "Target"    	"CASTER"    
-		                }        
-		            }
-		        }
-		    }
-		}
-
-		"modifier_chaos_strike_crit_datadriven"
-		{
-		    "IsHidden"  "1"
-		    "Properties"
-		    {
-		        "MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE" "%crit_damage"
-		    }
-
-		    "OnAttack"
-		    {
-		    	"ApplyModifier"
-		    	{
-		    		"ModifierName"	"modifier_chaos_strike_armor_datadriven"
-		    		"Target" 		"TARGET"
-		    		"Duration"		"%armor_reduction_duration"
-		    	}
-		    }
-
-		    "OnAttackLanded"
-		    {
-		        "RemoveModifier"
-		        {
-		            "ModifierName"  "modifier_chaos_strike_crit_datadriven"
-		            "Target"   		"CASTER"    
-		        }
-		    }
-		}
-
-		"modifier_chaos_strike_armor_datadriven"
-		{
-			"IsHidden"	"1"
-			"IsDebuff"	"1"
-
-			"Properties"
-			{
-				"MODIFIER_PROPERTY_PHYSICAL_ARMOR_BONUS" "%armor_reduction"
-			}
-		}
-	}
-}
-
-
-"frostmourne_datadriven"
-{
-	// General
-	//-------------------------------------------------------------------------------------------------------------
-	"BaseClass"				"ability_datadriven"
-	"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-	"SpellImmunityType"		"SPELL_IMMUNITY_ENEMIES_YES"
-	"AbilityTextureName"	"abaddon_frostmourne"
-	
-
-	// Special
-	//-------------------------------------------------------------------------------------------------------------
-	"AbilitySpecial"
-	{
-		"01"
-		{
-			"var_type"						"FIELD_FLOAT"
-			"debuff_duration"				"2.5"
-		}
-		"02"
-		{
-			"var_type"						"FIELD_FLOAT"
-			"buff_duration"					"4.5"
-		}
-		"03"
-		{
-			"var_type"						"FIELD_INTEGER"
-			"slow_pct"						"-5 -10 -15 -20"
-		}
-		"04"
-		{
-			"var_type"						"FIELD_INTEGER"
-			"attack_slow_tooltip"			"-5 -10 -15 -20"
-		}
-		"05"
-		{
-			"var_type"						"FIELD_INTEGER"
-			"move_speed_pct"				"15"
-		}
-		"06"
-		{
-			"var_type"						"FIELD_INTEGER"
-			"attack_speed"					"10 20 30 40"
-		}
-	}
-
-	"precache"
-	{
-		"particle" 	"particles/units/heroes/hero_abaddon/abaddon_frost_slow.vpcf"
-		"particle"  "particles/units/heroes/hero_abaddon/abaddon_frost_buff.vpcf"
-	}
-
-	"Modifiers"
-	{
-		"modifier_frostmourne"
-		{
-			"Passive"	"1"
-			"IsHidden"	"1"
-
-			"OnAttackLanded"
-			{
-				"ApplyModifier"
-				{
-					"Target"
-					{
-						"Center"	"TARGET"
-						"Teams"		"DOTA_UNIT_TARGET_TEAM_ENEMY"
-					}
-					"ModifierName"		"modifier_frostmourne_debuff"
-					"Duration"			"%debuff_duration"
-				}
-				"ApplyModifier"
-				{
-					"Target"			"CASTER"
-					"ModifierName"		"modifier_frostmourne_buff"
-					"Duration"			"%buff_duration"
-				}
-			}
-		}
-
-		"modifier_frostmourne_debuff"
-		{
-			"IsDebuff"	"1"
-			"EffectName"	"particles/units/heroes/hero_abaddon/abaddon_frost_slow.vpcf"
-			"EffectAttachType"	"follow_origin"
-			"Properties"
-			{
-				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%slow_pct"
-				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_slow_tooltip"
-			}
-			
-			"OnAttacked"
-			{
-				"ApplyModifier"
-				{
-					"Target"			"ATTACKER"
-					"ModifierName"		"modifier_frostmourne_buff"
-					"Duration"			"%buff_duration"
-				}
-			}
-		}
-
-		"modifier_frostmourne_buff"
-		{
-			"IsBuff"		"1"
-			"EffectName"	"particles/units/heroes/hero_abaddon/abaddon_frost_buff.vpcf"
-			"EffectAttachType"	"follow_origin"
-			"Properties"
-			{
-				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%move_speed_pct"
-				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_speed"
-			}
-		}
-	}
 }
 
 
@@ -382,5 +167,224 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+"saitama_push_ups"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_push_ups"
+		//"ScriptFile"					"abilities.lua"
+		"ScriptFile"					"heroes/hero_saitama/push_ups.lua"
+		"MaxLevel" 						"7"
+		"AbilityChannelTime"			"2"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"100"
+		"AbilityManaCost"				"200 180 160 140 120 100 80"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_strength"		"1 1 1 2 2 2 3"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stacks_amount"			"1"
+			}
+		}
+	}
+
+	"saitama_squats"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_squats"
+		"ScriptFile"					"heroes/hero_saitama/squats.lua"
+		"MaxLevel" 						"7"
+		"AbilityChannelTime"			"2"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"100"
+		"AbilityManaCost"				"200 180 160 140 120 100 80"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_strength"		"1 1 1 2 2 2 3"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stacks_amount"			"1"
+			}
+		}
+	}
+
+	"saitama_sit_ups"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_sit_ups"
+		"ScriptFile"					"heroes/hero_saitama/sit_ups.lua"
+		"MaxLevel" 						"7"
+		"AbilityChannelTime"			"2"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"100"
+		"AbilityManaCost"				"200 180 160 140 120 100 80"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_strength"		"1 1 1 2 2 2 3"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stacks_amount"			"1"
+			}
+		}
+	}
+
+	"saitama_jogging"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_jogging"
+		"ScriptFile"					"heroes/hero_saitama/jogging.lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"LevelsBetweenUpgrades"			"3"
+		"RequiredLevel"                 "4"
+		"MaxLevel"						"7"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bonus_strength"		"1"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stacks_amount"			"1"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"range"					"10000 9500 9000 8500 8000 7500 7000"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"range_limit"			"400"
+			}
+		}
+	}
+
+	"saitama_serious_punch"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_serious_punch"
+		"ScriptFile"					"heroes/hero_saitama/serious_punch.lua"
+		"MaxLevel" 						"1"
+		"IsGrantedByScepter"			"1"
+		"HasInnateModifiers"			"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PURE"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCooldown"				"20"
+		"AbilityCastRange"				"25"
+		"AbilityCastPoint"				"0.4"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"base_damage_multiplier_pct"	"200"
+				"CalculateSpellDamageTooltip"	"0"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_multiplier_per_stack_pct"	"3"
+				"CalculateSpellDamageTooltip"	"0"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"knockback_duration_step"	"10000"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"knockback_distance_step"	"10"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"knockback_height_step"	"80"
+			}
+		}
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+			"particle"  "particles/econ/items/earthshaker/egteam_set/hero_earthshaker_egset/earthshaker_echoslam_start_fallback_mid_egset.vpcf"
+		}
+	}
+
+	"saitama_limiter"
+	{
+		"BaseClass"             		"ability_lua"
+		"AbilityTextureName"			"arena/saitama_limiter"
+		"ScriptFile"					"heroes/hero_saitama/limiter.lua"
+		"MaxLevel" 						"7"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AUTOCAST | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCooldown"				"2.5"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"HasScepterUpgrade"				"1"
+		"HasInnateModifiers"			"1"
+
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"bonus_strength_pct"	"0.001 0.002 0.003 0.004 0.005 0.006 0.007"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"manacost_pct"			"15"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"loss_stacks_pct"		"70"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"stacks_for_kill"		"10"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"manacost"				"300 250 200 150 100 50 0"
+			}
+		}
+	}
 
 }

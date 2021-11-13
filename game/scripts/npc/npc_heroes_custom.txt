@@ -4,6 +4,43 @@
 "DOTAHeroes"
 {
 
+	
 
+	"npc_dota_hero_saitama"
+	{
+		"DisabledInRanked"	"0"
+		"BaseClass"					"npc_dota_hero"
+		//"override_hero"	"npc_dota_hero_arena_base"
+		"Model"						"models/units/saitama/saitama.vmdl"
+		"UnitLabel"         		"Saitama"
+		"Enabled"					"1"
+		"BotImplemented"			"0"
+		"NewHero"					"1"
+		"HeroID"					"253"
+		"ModelScale"				"1"
+		"Ability1"					"saitama_push_ups"
+		"Ability2"					"saitama_sit_ups"
+		"Ability3"					"saitama_squats"
+		"Ability4"					"saitama_jogging"
+		"Ability5"					"saitama_serious_punch"
+		"Ability6"					"saitama_limiter"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
+		"AttributePrimary"			"DOTA_ATTRIBUTE_STRENGTH"
+		"AttackRange"				"120"
+		"AttackRate"				"1"
+		"AttributeBaseStrength"		"1"
+		"AttributeBaseIntelligence"	"1"
+		"AttributeBaseAgility"		"1"
+		"AttributeStrengthGain"		"1"
+		"AttributeIntelligenceGain"	"1"
+		"AttributeAgilityGain"		"1"
+		"AttackDamageMin"			"0"
+		"AttackDamageMax"			"0"
+		"MagicalResistance"			"0"
+		"StatusHealth" 				"4" // Base health.
+		"StatusHealthRegen"			"0" // Health regeneration rate.
+		"StatusMana" 				"199" // Base mana.
+		"StatusManaRegen" 			"5" // Mana regeneration rate.
+	}
 
 }

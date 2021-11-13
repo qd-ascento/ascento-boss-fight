@@ -1,9 +1,15 @@
 require('spawn')
 require('timers')
---require('Barebones')
+require('abilities')
+
+local requirements = {
+	"libraries/keyvalues",
+	"data/kv_data",
+
+}
 
 
-ENABLE_HERO_RESPAWN = true              -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
+ENABLE_HERO_RESPAWN = false              -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
 UNIVERSAL_SHOP_MODE = true             -- Should the main shop contain Secret Shop items as well as regular items
 ALLOW_SAME_HERO_SELECTION = true        -- Should we let people select the same hero as each other
 
@@ -44,6 +50,8 @@ MAX_LEVEL = 499                          -- What level should we let heroes get 
 USE_CUSTOM_XP_VALUES = true             -- Should we use custom XP values to level up heroes, or the default Dota numbers?
 FIXED_RESPAWN_TIME = 10                 -- What time should we use for a fixed respawn timer?  Use -1 to keep the default dota behavior.
 
+FREE_COURIER = true                  -- Бесплатная кура?
+
 -- Fill this table up with the required XP per level if you want to change it
 XP_PER_LEVEL_TABLE = {}
 XP_PER_LEVEL_TABLE[0] = 0
@@ -62,7 +70,14 @@ function Precache( context )
 end
 
 
+local modifiers = {
+	modifier_saitama_limiter = "heroes/hero_saitama/modifier_saitama_limiter",
+	modifier_golden_boss = "heroes/boss/golden_boss",
+}
 
+for k,v in pairs(modifiers) do
+	LinkLuaModifier(k, v, LUA_MODIFIER_MOTION_NONE)
+end
 
 
 function CAddonTemplateGameMode:OnFirstPlayerLoaded()
@@ -96,6 +111,7 @@ function CAddonTemplateGameMode:InitGameMode()
   		mode = GameRules:GetGameModeEntity()  
 
   		mode:SetUnseenFogOfWarEnabled(true)
+  		mode:SetFreeCourierModeEnabled( FREE_COURIER )
   		mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME )
 	    mode:SetRecommendedItemsDisabled( RECOMMENDED_BUILDS_DISABLED )
 	    mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
@@ -109,26 +125,26 @@ function CAddonTemplateGameMode:InitGameMode()
 	    mode:SetCustomHeroMaxLevel ( MAX_LEVEL )
 	    mode:SetCustomXPRequiredToReachNextLevel( XP_PER_LEVEL_TABLE )
 
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_DAMAGE,1.0)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_DAMAGE,1.2)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE,0.6)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_DAMAGE,1)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_DAMAGE,1)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE,1)
 	    mode:SetMaximumAttackSpeed( 2500 ) 
 		mode:SetMinimumAttackSpeed( 50 )
-	    -- mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_STATUS_RESISTANCE_PERCENT,0)
+	    --mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_STATUS_RESISTANCE_PERCENT,0)
 
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP,9)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP_REGEN,0.025)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP,1)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_HP_REGEN,0)
 	    --mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_STATUS_RESISTANCE_PERCENT,0)
 
 
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ARMOR,0.07)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ATTACK_SPEED,0.3)
-	    -- GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_MOVE_SPEED_PERCENT,0)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ARMOR,0.005)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_ATTACK_SPEED,0.5)
+	   -- GameMode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_MOVE_SPEED_PERCENT,0)
 
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA,7)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA_REGEN,0.008)
-	    --mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_SPELL_AMP_PERCENT,0.1)
-	    -- mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MAGIC_RESISTANCE_PERCENT,0)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA,1)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MANA_REGEN,0)
+	   -- mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_SPELL_AMP_PERCENT,0)
+	    --mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_MAGIC_RESISTANCE_PERCENT,0)
 
 	    --mode:SetBotThinkingEnabled( USE_STANDARD_DOTA_BOT_THINKING )
 	    mode:SetTowerBackdoorProtectionEnabled( ENABLE_TOWER_BACKDOOR_PROTECTION )
@@ -144,3 +160,4 @@ function Activate()
 	GameRules.AddonTemplate = CAddonTemplateGameMode()
 	GameRules.AddonTemplate:InitGameMode()
 end
+
