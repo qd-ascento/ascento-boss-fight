@@ -14,6 +14,8 @@
 
 
 
+		"npc_dota_hero_johny"			"Крип-крипочек"
+		"npc_dota_hero_johny_npedesc1"			"Крип - смелый крип-крипочек, идёт напролом защищая своих близких глядя страху в лицо."
 
 
 		"npc_dota_hero_saitama"			"Saitama"

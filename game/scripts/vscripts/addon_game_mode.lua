@@ -1,6 +1,7 @@
 require('spawn')
 require('timers')
 require('abilities')
+require('tp')
 
 local requirements = {
 	"libraries/keyvalues",
@@ -55,9 +56,9 @@ FREE_COURIER = true                  -- Бесплатная кура?
 -- Fill this table up with the required XP per level if you want to change it
 XP_PER_LEVEL_TABLE = {}
 XP_PER_LEVEL_TABLE[0] = 0
-XP_PER_LEVEL_TABLE[1] = 150
+XP_PER_LEVEL_TABLE[1] = 250
 for i = 2, MAX_LEVEL do
-  	XP_PER_LEVEL_TABLE[i] = i * (i * 100) / 2
+  	XP_PER_LEVEL_TABLE[i] = i * (i * 200) / 2
 end
 if CAddonTemplateGameMode == nil then
 	CAddonTemplateGameMode = class({})
@@ -91,6 +92,7 @@ function CAddonTemplateGameMode:InitGameMode()
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 0 )
 
 	GameRules:SetHeroRespawnEnabled( ENABLE_HERO_RESPAWN )
+	GameRules:SetCustomGameSetupAutoLaunchDelay( 0 )
   	GameRules:SetUseUniversalShopMode( UNIVERSAL_SHOP_MODE )
  	GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
   	GameRules:SetHeroSelectionTime( HERO_SELECTION_TIME )
@@ -125,9 +127,9 @@ function CAddonTemplateGameMode:InitGameMode()
 	    mode:SetCustomHeroMaxLevel ( MAX_LEVEL )
 	    mode:SetCustomXPRequiredToReachNextLevel( XP_PER_LEVEL_TABLE )
 
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_DAMAGE,1)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_DAMAGE,1)
-	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE,1)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_DAMAGE,0)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_AGILITY_DAMAGE,0)
+	    mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_INTELLIGENCE_DAMAGE,0)
 	    mode:SetMaximumAttackSpeed( 2500 ) 
 		mode:SetMinimumAttackSpeed( 50 )
 	    --mode:SetCustomAttributeDerivedStatValue(DOTA_ATTRIBUTE_STRENGTH_STATUS_RESISTANCE_PERCENT,0)
